@@ -1,20 +1,21 @@
-
-
+import os
 from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+import environ
 
+env = environ.Env(DEBUG=(bool, False))
 
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-%y7mybq30nndc^b_$-al+%f2wa49qq($5z%5z3$behr90zh41b"
+environ.Env.read_env(BASE_DIR / ".env")
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+SECRET_KEY = env("SECRET_KEY")
 
-ALLOWED_HOSTS = []
+DEBUG = env("DEBUG")
 
+ALLOWED_HOSTS =  ['*']
+
+SITE_ID = 1
 
 # Application definition
 
@@ -27,8 +28,6 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
 ]
 
-SITE_ID = 1
-
 THIRD_PARTY_APPS = [   
     'django_extensions', 
     "corsheaders",
@@ -38,11 +37,15 @@ THIRD_PARTY_APPS = [
     'drf_spectacular_sidecar',  # required for Django collectstatic discovery
 
     'drf_chunked_upload', # file upload chunk by chunk
+    'queued_storage', # file upload queue by queue
+    #'djcelery', #  for workers
+    'bootstrap5', # bootstrap5 CSS.
 ]
 
 LOCAL_APPS = [
-    'spectacular',    
-    'users',
+    'apps.spectacular',
+    'apps.users',
+    'apps.upload',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -69,7 +72,7 @@ CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        'DIRS': [BASE_DIR, "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -85,18 +88,10 @@ TEMPLATES = [
 WSGI_APPLICATION = "djangodemo.wsgi.application"
 
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
-
-
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-       # 'rest_framework.permissions.IsAuthenticated', # for authorisation
-       'rest_framework.permissions.AllowAny', # default
+       'rest_framework.permissions.IsAuthenticated', # for authentication.
+       #'rest_framework.permissions.AllowAny', # default
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
@@ -114,15 +109,29 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator", },
 ]
 
+# using redis caches.
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
 
 # Internationalization
-LANGUAGE_CODE = "en-us"
-TIME_ZONE = "UTC"
+LANGUAGE_CODE = env('LANGUAGE_CODE')
+TIME_ZONE = env('TIME_ZONE')
 USE_I18N = True
 USE_TZ = True
 
-
-STATIC_URL = "static/"
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR, "static"]
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
@@ -149,3 +158,9 @@ SPECTACULAR_SETTINGS = {
 
 }
 
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
+}

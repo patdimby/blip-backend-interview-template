@@ -2,7 +2,7 @@
 
 from django.db import migrations, models
 import django.utils.timezone
-import users.managers
+import apps.users.managers
 
 
 class Migration(migrations.Migration):
@@ -103,7 +103,7 @@ class Migration(migrations.Migration):
                 "abstract": False,
             },
             managers=[
-                ("objects", users.managers.UserManager()),
+                ("objects", apps.users.managers.UserManager()),
             ],
         ),
     ]

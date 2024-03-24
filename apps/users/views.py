@@ -35,7 +35,7 @@ from drf_spectacular.utils import extend_schema, extend_schema_view
     ),
 )
 class UserViewSet(viewsets.ViewSet):
-    permission_classes = [IsEnrolled]    
+   
     serializer_class = UserSerializer
 
     def list(self, request):
