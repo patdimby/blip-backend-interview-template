@@ -10,19 +10,29 @@ from .models import User
 from .serializers import UserSerializer
 from .permissions import *
 
-
 from drf_spectacular.utils import extend_schema, extend_schema_view
+from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
+from drf_spectacular.types import OpenApiTypes
 
 # Create your views here.
 @extend_schema_view(
-    list=extend_schema(request=None, 
-        description="Return the list of users."
+    list=extend_schema(       
+        description="Return the list of users.",
+        request=UserSerializer,
+        responses={200: UserSerializer},
+        methods=["get"]
     ),
     create=extend_schema(
-        description="Create an user."
+        description="Create an user.",
+        request=UserSerializer,
+        responses={201: UserSerializer},
+        methods=["post"]
     ),
     retrieve=extend_schema(
-        description="The retrieve action that returns a user selected by `id`."
+        description="The retrieve action that returns a user selected by `id`.",
+        request=UserSerializer,
+        responses={200: UserSerializer},
+        methods=["get"]
     ),
     update=extend_schema(
         description="Delete a specified user identified by `id`"
@@ -35,7 +45,6 @@ from drf_spectacular.utils import extend_schema, extend_schema_view
     ),
 )
 class UserViewSet(viewsets.ViewSet):
-   
     serializer_class = UserSerializer
 
     def list(self, request):
@@ -43,18 +52,18 @@ class UserViewSet(viewsets.ViewSet):
         serializer = UserSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def create(self, request, format=None):        
-        data = JSONParser().parse(request)        
-        serializer = UserSerializer(data=data)       
+    def create(self, request, format=None):
+        data = JSONParser().parse(request)
+        serializer = UserSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
-   
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
     def retrieve(self, request, pk=None):
         queryset = User.objects.all()
         if pk:
-            user=get_object_or_404(queryset, id=pk)
+            user = get_object_or_404(queryset, id=pk)
             serializer = UserSerializer(user)
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(f'User unknown: {pk}', status=status.HTTP_200_OK)
@@ -77,7 +86,7 @@ class UserViewSet(viewsets.ViewSet):
     def destroy(self, request, pk=None):
         queryset = User.objects.all()
         if id:
-            user=get_object_or_404(queryset, id=pk)
+            user = get_object_or_404(queryset, id=pk)
             serializer = UserSerializer(user)
             if serializer.is_valid():
                 user.delete()
@@ -85,20 +94,19 @@ class UserViewSet(viewsets.ViewSet):
             return Response(f'User unknown: {pk}', status=status.HTTP_204_NO_CONTENT)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-   
+
 class PermissionView(APIView):
     serializer_class = UserSerializer
-    
-    @extend_schema(request=None, 
-        description="Test permissions of user."
-    )
+
+    @extend_schema(request=None,
+                   description="Test permissions of user."
+                   )
     def get(self, request):
         queryset = User.objects.all()
         if request.user.is_staff:
             serializer = UserSerializer(queryset, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
-            content = {"message":"You don't have permission to access that ressource"}
+            content = {"message": "You don't have permission to access that ressource"}
             return Response(content, status=status.HTTP_403_FORBIDDEN)
         # raise PermissionDenied(content)
-    

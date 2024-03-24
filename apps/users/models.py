@@ -10,6 +10,7 @@ class User(AbstractUser):
     """
     Default custom user model.
     """
+
     # ROLES
     class Types(models.TextChoices):
         ADMIN = "ADMIN", "Admin"
@@ -41,6 +42,6 @@ class User(AbstractUser):
 
         """
         return reverse("users:detail", kwargs={"pk": self.id})
-    
+
     def __str__(self) -> str:
         return self.role
