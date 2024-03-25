@@ -138,9 +138,11 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "users.User"
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Django test.',
-    'DESCRIPTION': 'Test organised in old comprehension of Django.',
-    'VERSION': '1.0.0',
+    'TITLE': 'Technical questions',
+    'DESCRIPTION': """Test organised for basic comprehension of work.
+    There are more responses but for avoiding a large video file, and taking less
+    time, keep responses simple.""",
+    'VERSION': '1.1.0',
     'SERVE_INCLUDE_SCHEMA': False,
     
     "SWAGGER_UI_SETTINGS": {
