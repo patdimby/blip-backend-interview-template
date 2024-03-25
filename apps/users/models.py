@@ -28,6 +28,7 @@ class User(AbstractUser):
     last_name = None  # type: ignore
     email = EmailField(_("email address"), unique=True)
     username = None  # type: ignore
+    
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
@@ -43,5 +44,6 @@ class User(AbstractUser):
         """
         return reverse("users:detail", kwargs={"pk": self.id})
 
-    def __str__(self) -> str:
-        return self.role
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
+
