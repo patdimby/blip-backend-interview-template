@@ -29,6 +29,7 @@ class ModelUnitTestCase(TestCase):
         return [str(user) for user in User.objects.all()]
 
     def test_full_names(self):
+        """ Test for full names. """
         assert self.full_names() == [
             "John Doe",
             "Jane Smith",
@@ -53,6 +54,7 @@ class ModelUnitTestCase(TestCase):
         return list(set(arr))
 
     def test_unique_first_names(self):
+        """Test for unique first names."""
         answer = self.unique_first_names()
         answer.sort()
         assert answer == ['Emily', 'Jane', 'John', 'Liam', 'Michael', 'Olivia', 'William']

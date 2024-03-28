@@ -45,5 +45,6 @@ class User(django.contrib.auth.models.AbstractUser):
         return django.urls.reverse("users:detail", kwargs={"pk": self.id})
 
     def __str__(self):
+        """For returning full names."""
         return f"{self.first_name} {self.last_name}"
 
