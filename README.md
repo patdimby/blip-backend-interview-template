@@ -1,4 +1,4 @@
 - Create a python virtualenv: `python -m venv venv`
 - Activate the environment: `source venv/bin/activate`
 - Install dependencies: `pip install -r requirements.txt`
-- Run tests: `pytest tests.py -v`
+- Run tests: `python manage.py test`

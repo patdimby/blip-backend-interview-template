@@ -40,6 +40,8 @@ THIRD_PARTY_APPS = [
     'queued_storage', # file upload queue by queue
     #'djcelery', #  for workers
     'bootstrap5', # bootstrap5 CSS.
+
+    'pytest',
 ]
 
 LOCAL_APPS = [
