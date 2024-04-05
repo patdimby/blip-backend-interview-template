@@ -15,9 +15,10 @@ from drf_spectacular.utils import extend_schema, extend_schema_view
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
 from drf_spectacular.types import OpenApiTypes
 
+
 # Create your views here.
 @extend_schema_view(
-    list=extend_schema(       
+    list=extend_schema(
         description="Return the list of users.",
         request=UserSerializer,
         responses={200: UserSerializer},
@@ -100,15 +101,14 @@ class UserViewSet(viewsets.ViewSet):
 class PermissionView(APIView):
     serializer_class = UserSerializer
     permission_classes = (IsAdminUser,)
+
     @extend_schema(request=None,
                    description="User requests only for admin."
                    )
     def get(self, request):
-        queryset = User.objects.all()        
+        queryset = User.objects.all()
         serializer = UserSerializer(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)        
+        return Response(serializer.data, status=status.HTTP_200_OK)
         # content = {"message": "You don't have permission to access that ressource"}
         # return Response(content, status=status.HTTP_403_FORBIDDEN)
         # raise PermissionDenied(content)
-    
-

@@ -37,7 +37,7 @@ class Service(models.Model):
     slug = models.SlugField(max_length=200, blank=True)
     resume = models.TextField(default='', blank=True)
     description = models.TextField(default='', blank=True)
-    url = models.CharField(max_length=20, default='', blank=True)    
+    url = models.CharField(max_length=20, default='', blank=True)
 
     def __str__(self) -> str:
         return self.title
@@ -53,7 +53,7 @@ class Link(models.Model):
     slug = models.SlugField(max_length=200, blank=True)
     resume = models.TextField(default='', blank=True)
     description = models.TextField(default='', blank=True)
-    url = models.CharField(max_length=20, default='', blank=True)   
+    url = models.CharField(max_length=20, default='', blank=True)
 
     def __str__(self) -> str:
         return self.title
@@ -62,7 +62,6 @@ class Link(models.Model):
         if not self.slug:
             self.slug = slugify(self.title)
             super().save(*args, **kwargs)
-    
 
 
 class Address(models.Model):
@@ -76,6 +75,6 @@ class Address(models.Model):
     twitter = models.CharField(max_length=20, default='', blank=True)
     instagram = models.CharField(max_length=20, default='', blank=True)
     youtube = models.CharField(max_length=20, default='', blank=True)
-    
+
     def __str__(self):
         return self.sitename

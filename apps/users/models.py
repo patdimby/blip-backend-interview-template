@@ -18,7 +18,7 @@ class User(AbstractUser):
         EMPLOYEE = "EMPLOYEE", "Employee"
         CUSTOMER = "CUSTOMER", "Customer"
 
-    role =CharField(
+    role = CharField(
         max_length=20, choices=Types.choices, default=Types.ADMIN
     )
 
@@ -29,7 +29,6 @@ class User(AbstractUser):
     email = EmailField(_("email address"), unique=True)
     username = None  # type: ignore
     activated = BooleanField(blank=True, default=True)
-    
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
@@ -48,4 +47,3 @@ class User(AbstractUser):
     def __str__(self):
         """For returning full names."""
         return f"{self.first_name} {self.last_name}"
-
