@@ -19,7 +19,7 @@ SITE_ID = 1
 
 # Application definition
 
-DJANGO_APPS = [
+DJANGO_APPS = [   
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -30,7 +30,7 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [   
     'django_extensions', 
-    "corsheaders",
+    "corsheaders", # cors
     'rest_framework',
     'rest_framework.authtoken',
     'drf_spectacular',
@@ -38,15 +38,18 @@ THIRD_PARTY_APPS = [
 
     'drf_chunked_upload', # file upload chunk by chunk
     'queued_storage', # file upload queue by queue
-    #'djcelery', #  for workers
-    'bootstrap5', # bootstrap5 CSS.
+    # 'djcelery', #  for workers
+    # 'bootstrap5', # bootstrap5 CSS.
 
     'pytest',
 ]
 
-LOCAL_APPS = [
+LOCAL_APPS = [    
+    'apps.billing',
+    'apps.pages',
+    'apps.utils',
     'apps.spectacular',
-    'apps.users',    
+    'apps.users',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -54,6 +57,7 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    'corsheaders.middleware.CorsMiddleware', # cors
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -61,14 +65,12 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
-
+   
 ]
 
 ROOT_URLCONF = "djangodemo.urls"
 
-CORS_ALLOWED_ORIGINS = ("http://localhost:3000", "http://localhost:8000",)
-CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]
+CORS_ALLOW_ALL_ORIGINS = True
 
 TEMPLATES = [
     {
@@ -91,12 +93,14 @@ WSGI_APPLICATION = "djangodemo.wsgi.application"
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-       'rest_framework.permissions.IsAuthenticated', # for authentication.
-       #'rest_framework.permissions.AllowAny', # default
+       # 'rest_framework.permissions.IsAuthenticated', # for authentication.
+       'rest_framework.permissions.AllowAny', # default
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
+
+        'rest_framework.authentication.TokenAuthentication',
     ],
     'DEFAULT_RENDERER_CLASSES': ['rest_framework.renderers.JSONRenderer', ],
     'DEFAULT_PARSER_CLASSES': ['rest_framework.parsers.JSONParser',],

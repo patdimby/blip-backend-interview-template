@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
 from rest_framework import status
 from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 from .models import User
 from .serializers import UserSerializer
@@ -45,6 +46,7 @@ from drf_spectacular.types import OpenApiTypes
     ),
 )
 class UserViewSet(viewsets.ViewSet):
+    permission_classes = (IsAuthenticated,)
     serializer_class = UserSerializer
 
     def list(self, request):
@@ -97,16 +99,16 @@ class UserViewSet(viewsets.ViewSet):
 
 class PermissionView(APIView):
     serializer_class = UserSerializer
-
+    permission_classes = (IsAdminUser,)
     @extend_schema(request=None,
-                   description="Test permissions of user."
+                   description="User requests only for admin."
                    )
     def get(self, request):
-        queryset = User.objects.all()
-        if request.user.is_staff:
-            serializer = UserSerializer(queryset, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
-            content = {"message": "You don't have permission to access that ressource"}
-            return Response(content, status=status.HTTP_403_FORBIDDEN)
+        queryset = User.objects.all()        
+        serializer = UserSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)        
+        # content = {"message": "You don't have permission to access that ressource"}
+        # return Response(content, status=status.HTTP_403_FORBIDDEN)
         # raise PermissionDenied(content)
+    
+

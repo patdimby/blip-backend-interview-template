@@ -1,33 +1,34 @@
-import django.contrib.auth.models
-import django.db.models
-import django.urls
-import django.utils.translation
+from django.contrib.auth.models import AbstractUser
+from django.db.models import TextChoices, CharField, EmailField, BooleanField
+from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
 
 from .managers import UserManager
 
 
-class User(django.contrib.auth.models.AbstractUser):
+class User(AbstractUser):
     """
     Default custom user model.
     """
 
     # ROLES
-    class Types(django.db.models.TextChoices):
+    class Types(TextChoices):
         ADMIN = "ADMIN", "Admin"
         OWNER = "OWNER", "Owner"
         EMPLOYEE = "EMPLOYEE", "Employee"
         CUSTOMER = "CUSTOMER", "Customer"
 
-    role = django.db.models.CharField(
+    role =CharField(
         max_length=20, choices=Types.choices, default=Types.ADMIN
     )
 
     # First and last name do not cover name patterns around the globe
-    name = django.db.models.CharField(django.utils.translation.gettext_lazy("Name of User"), blank=True, max_length=255)
-    first_name = django.db.models.CharField(max_length=200, default='', blank=True)  # type: ignore
-    last_name = django.db.models.CharField(max_length=200, default="", blank=True)  # type: ignore
-    email = django.db.models.EmailField(django.utils.translation.gettext_lazy("email address"), unique=True)
+    name = CharField(_("Name of User"), blank=True, max_length=255)
+    first_name = CharField(max_length=200, default='', blank=True)  # type: ignore
+    last_name = CharField(max_length=200, default="", blank=True)  # type: ignore
+    email = EmailField(_("email address"), unique=True)
     username = None  # type: ignore
+    activated = BooleanField(blank=True, default=True)
     
 
     USERNAME_FIELD = "email"
@@ -42,7 +43,7 @@ class User(django.contrib.auth.models.AbstractUser):
             str: URL for user detail.
 
         """
-        return django.urls.reverse("users:detail", kwargs={"pk": self.id})
+        return reverse("users:detail", kwargs={"pk": self.id})
 
     def __str__(self):
         """For returning full names."""
