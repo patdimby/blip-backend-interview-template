@@ -30,17 +30,11 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [   
     'django_extensions', 
-    "corsheaders", # cors
+    'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
     'drf_spectacular',
     'drf_spectacular_sidecar',  # required for Django collectstatic discovery
-
-    'drf_chunked_upload', # file upload chunk by chunk
-    'queued_storage', # file upload queue by queue
-    # 'djcelery', #  for workers
-    # 'bootstrap5', # bootstrap5 CSS.
-
     'pytest',
 ]
 
@@ -64,8 +58,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-   
+    'whitenoise.middleware.WhiteNoiseMiddleware',   
 ]
 
 ROOT_URLCONF = "djangodemo.urls"
