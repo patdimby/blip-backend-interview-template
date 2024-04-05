@@ -10,6 +10,10 @@ class Menu(models.Model):
     hasChild = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True, blank=True)
 
+    class Meta:
+        indexes = [models.Index(fields=['-title']), ]
+        ordering = ('-title',)
+
     def __str__(self) -> str:
         return self.title
 
@@ -22,11 +26,11 @@ class Menu(models.Model):
 class MenuItem(models.Model):
     title = models.CharField(max_length=20)
     link = models.CharField(max_length=20, default='', blank=True)
-    parent = models.ForeignKey(Menu, related_name='slug_name', on_delete=models.CASCADE)
+    menu = models.ForeignKey(Menu, related_name='items', on_delete=models.CASCADE)
 
     class Meta:
         indexes = [models.Index(fields=['-title']), ]
-        ordering = ['-title']
+        ordering = ('-title',)
 
     def __str__(self) -> str:
         return self.title

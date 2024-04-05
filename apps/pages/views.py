@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from .models import *
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework.parsers import JSONParser
+
 from .serializers import *
+
 def start():
     context = dict()
     infos = Address.objects.all()
@@ -11,9 +12,7 @@ def start():
     if len(infos) > 0:
         context['address'] = infos[0]
     # services
-    context['services'] = Service.objects.all()
-    # menus
-    context['menus'] = Menu.objects.all()
+    context['services'] = Service.objects.all()   
     # links
     context['links'] = Link.objects.all()
     return context

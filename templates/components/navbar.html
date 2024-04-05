@@ -47,14 +47,8 @@
       <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarCollapses">
-    <div class="navbar-nav ms-auto p-4 p-lg-0">
-        {% for menu in context.menus %}
-            {% if menu.haschild != True %}
-                <a href="{{ menu.link }}" class="nav-item nav-link">{{ menu.title }}</a>
-            {% else %}
-                <a href="{{ menu.link }}" id="pages" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">{{ menu.title }}</a>
-            {% endif %}
-        {% endfor %}
+    <div class="navbar-nav ms-auto p-4 p-lg-0" id="menus" name="menus">
+        
     </div>
   <a href="" class="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block">Appointment<i class="fa fa-arrow-right ms-3"></i></a>
   </div>
