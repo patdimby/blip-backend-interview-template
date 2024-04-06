@@ -42,6 +42,8 @@ class Service(models.Model):
     resume = models.TextField(default='', blank=True)
     description = models.TextField(default='', blank=True)
     url = models.CharField(max_length=20, default='', blank=True)
+    icon = models.CharField(max_length=20,default='fa', blank=True)
+    delay = models.CharField(max_length=4,default='0.2s', blank=True)
 
     def __str__(self) -> str:
         return self.title
@@ -74,11 +76,12 @@ class Address(models.Model):
     daily = models.CharField(max_length=200)
     sitename = models.CharField(max_length=200, default='', blank=True)
     phone = models.CharField(max_length=20)
-    facebook = models.CharField(max_length=20, default='', blank=True)
-    linkedin = models.CharField(max_length=20, default='', blank=True)
-    twitter = models.CharField(max_length=20, default='', blank=True)
-    instagram = models.CharField(max_length=20, default='', blank=True)
-    youtube = models.CharField(max_length=20, default='', blank=True)
+    facebook = models.CharField(max_length=200, default='', blank=True)
+    linkedin = models.CharField(max_length=200, default='', blank=True)
+    twitter = models.CharField(max_length=200, default='', blank=True)
+    instagram = models.CharField(max_length=200, default='', blank=True)
+    youtube = models.CharField(max_length=200, default='', blank=True)
+    github = models.CharField(max_length=200, default='', blank=True)
 
     def __str__(self):
         return self.sitename

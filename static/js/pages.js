@@ -35,17 +35,18 @@ function setMenu(menus) {
 }
 
 function setElements(data, tag, title) {
-  /*var title = document.createElement("h5");
-  title.classList.add("text-light", "mb-4");
-  title.textContent = title;
-  $(tag).append(title);*/
+  var h5 = document.createElement("h5");
+  h5.classList.add("text-light", "mb-4");
+  const textNode = document.createTextNode(title);
+  h5.appendChild(textNode);
+  $(tag).append(h5);
   for (i = 0; i < data.length; i++) {
     var link = document.createElement("a");
     link.classList.add("btn", "btn-link");
     link.id = data[i].url;
     link.href = remote + data[i].url;
     link.textContent = data[i].title;
-    $("#" + tag).append(link);
+    $(tag).append(link);
   }
 }
 
@@ -57,19 +58,25 @@ $(document).ready(function () {
   }).then(function (menus) {
     setMenu(menus);
   });
-  // set quick links.
+  // get quick links.
   $.ajax({
     url: remote + "links/",
     method: "GET",
   }).then(function (data) {
-    setElements(data, "links", "Quick Links");
+    setElements(data, "#links", "Quick Links");
   });
-  // set services.
+  // get services.
   $.ajax({
     url: remote + "services/",
     method: "GET",
   }).then(function (data) {
-    console.log(data);
-    setElements(data, "service", "Services");
+    setElements(data, "#service", "Services");
+  });
+  // get infos
+  $.ajax({
+    url: remote + "info/",
+    method: "GET",
+  }).then(function (info) {
+    console.log(info);
   });
 });

@@ -8,4 +8,5 @@ urlpatterns = [
     path("links/", LinksView.as_view(), name="links"),
     path("about/", about, name="about"),
     path("menus/", menus_list, name="menus"),
+    path("info/", get_info, name="info"),
 ]

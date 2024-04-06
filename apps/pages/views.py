@@ -5,37 +5,23 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .serializers import *
 
-def start():
-    context = dict()
-    infos = Address.objects.all()
-    # owner informations
-    if len(infos) > 0:
-        context['address'] = infos[0]    
-    return context
+context = dict()    
+context['address'] = Address.objects.get(pk=2)
 
 
 def home(request):
-    """" Home page."""
-    context = start()
+    """" Home page."""   
     return render(request, 'pages/index.html', {'context': context})
 
 
 def services(request):
-    """ Services page. """
-    context = start()
+    """ Services page. """   
     return render(request, 'pages/services.html', {'context': context})
 
 
 def about(request):
-    """ About page. """
-    context = start()  
+    """ About page. """   
     return render(request, 'pages/about.html', {'context': context})
-
-
-def set_context(context, link: str):
-    menu = Menu.objects.get(link=link)
-    data = {'name': menu.link.capitalize(), 'title': menu.title}
-    context['page'] = data
 
 
 @csrf_exempt
@@ -44,4 +30,12 @@ def menus_list(request):
     if request.method == 'GET':
         menus = Menu.objects.all()
         serializer = MenuSerializer(menus, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
+@csrf_exempt
+def get_info(request):
+    """ Get informations. """    
+    if request.method == 'GET':
+        infos = Address.objects.get(pk=2)
+        serializer = AddressSerializer(infos)
         return JsonResponse(serializer.data, safe=False)
