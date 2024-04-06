@@ -72,11 +72,13 @@ $(document).ready(function () {
   }).then(function (data) {
     setElements(data, "#service", "Services");
   });
-  // get infos
+
+  /* get infos
   $.ajax({
     url: remote + "info/",
     method: "GET",
   }).then(function (info) {
     console.log(info);
-  });
+  }); */
+  
 });
