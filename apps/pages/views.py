@@ -10,11 +10,7 @@ def start():
     infos = Address.objects.all()
     # owner informations
     if len(infos) > 0:
-        context['address'] = infos[0]
-    # services
-    context['services'] = Service.objects.all()   
-    # links
-    context['links'] = Link.objects.all()
+        context['address'] = infos[0]    
     return context
 
 
@@ -32,8 +28,7 @@ def services(request):
 
 def about(request):
     """ About page. """
-    context = start()
-    set_context(context, 'about')
+    context = start()  
     return render(request, 'pages/about.html', {'context': context})
 
 
