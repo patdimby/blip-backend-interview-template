@@ -9,18 +9,22 @@ context = dict()
 context['address'] = Address.objects.get(pk=2)
 
 
+
 def home(request):
-    """" Home page."""   
+    """" Home page.""" 
+    context['services'] = Service.objects.all()
     return render(request, 'pages/index.html', {'context': context})
 
 
 def services(request):
-    """ Services page. """   
+    """ Services page. """
+    context['services'] = Service.objects.all()
     return render(request, 'pages/services.html', {'context': context})
 
 
 def about(request):
-    """ About page. """   
+    """ About page. """
+    context['services'] = Service.objects.all()
     return render(request, 'pages/about.html', {'context': context})
 
 
